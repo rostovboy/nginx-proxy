@@ -4,7 +4,7 @@ https://francoisromain.medium.com/host-multiple-websites-with-https-inside-docke
 Проект разворачивает jwilder/nginx-proxy на сервере
 
 В данном конфиге прокси и сайты-контейнеры будут находится в домашней директории пользователя devops в папке www.
-При необходимости необходимо заменить путь /home/devops/www на свой
+При необходимости заменить путь /home/devops/www на свой
 
 Сначала нужно создать сеть:
 
@@ -23,14 +23,17 @@ VIRTUAL_HOST=your-website.tld,www.your-website.tld
 LETSENCRYPT_HOST=your-website.tld,www.your-website.tld
 LETSENCRYPT_EMAIL=your-email@domain.tld
 
-также в docker-compose.yml должен быть указан порт в -expose или -ports
+также в docker-compose.yml должен быть указан порт в expose или ports
 
 
 Чтобы указать индивидульные настройки nginx для домена, необходимо в директории ngnix-proxy/vhost.d создать файл с названием домена, например, чтобы сделать перенаправление www на non-www, создаем файл www.your-website.tld и в нем указываем: 
 
 
 server_name www.your-website.tld;
-return 301 \$scheme://www.your-website.tld\$request_uri;
+
+return 301 \$scheme://your-website.tld\$request_uri;
+
+затем перезапускаем nginx-proxy (docker-compose down и docker-compose up -d)
 
 
 
